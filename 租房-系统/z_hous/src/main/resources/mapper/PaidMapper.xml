@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hous.mapper.PaidMapper" >
+  <resultMap id="BaseResultMap" type="com.hous.pojo.Paid" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="house_id" property="houseId" jdbcType="VARCHAR" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="price" property="price" jdbcType="DOUBLE" />
+    <result column="date" property="date" jdbcType="DATE" />
+    <result column="paydate" property="paydate" jdbcType="DATE" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="userlist_id" property="userlistId" jdbcType="INTEGER" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+  </resultMap>
+  
+     <select id="selectall" resultMap="BaseResultMap" parameterType="com.hous.pojo.QueryVo" >
+    select *
+    from paid
+    <where>
+		
+		<if test="zuname!=null and zuname!=''">
+		and name like '%${zuname}%'
+		</if>
+		<if test="fromdate!=null and fromdate!=''">
+		and date &gt;= #{fromdate}
+		</if>
+		<if test="todate!=null and todate!=''">
+		and date  &lt;= #{todate}
+		</if>
+		<if test="userlist_id!=null and userlist_id!=''">
+		and userlist_id=#{userlistId}
+		</if>
+		</where>
+
+  </select>
+  <select id="selectsum" resultType="Double" parameterType="com.hous.pojo.QueryVo" >
+    select SUM(price)
+    from paid
+    <where>
+		
+		<if test="zuname!=null and zuname!=''">
+		and name like '%${zuname}%'
+		</if>
+		<if test="fromdate!=null and fromdate!=''">
+		and date &gt;= #{fromdate}
+		</if>
+		<if test="todate!=null and todate!=''">
+		and date  &lt;= #{todate}
+		</if>
+		<if test="userlist_id!=null and userlist_id!=''">
+		and userlist_id=#{userlistId}
+		</if>
+		</where>
+
+  </select>
+  <delete id="deletepaid" parameterType="Integer" >
+		delete from paid  where id=#{id}
+	</delete>
+	<insert id="insertpaid" parameterType="com.hous.pojo.Paid" >
+		 insert into paid(house_id,address,price,date,paydate,status,name,userlist_id) 
+	  values(#{houseId},#{address},#{price},#{date},#{paydate},#{status},#{name},#{userlistId})
+	</insert>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, house_id, address, price, date, paydate, name, userlist_id, status
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.hous.pojo.PaidExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from paid
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from paid
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from paid
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.hous.pojo.PaidExample" >
+    delete from paid
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.hous.pojo.Paid" >
+    insert into paid (id, house_id, address, 
+      price, date, paydate, name, 
+      userlist_id, status)
+    values (#{id,jdbcType=INTEGER}, #{houseId,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, 
+      #{price,jdbcType=DOUBLE}, #{date,jdbcType=DATE}, #{paydate,jdbcType=DATE}, #{name,jdbcType=VARCHAR}, 
+      #{userlistId,jdbcType=INTEGER}, #{status,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hous.pojo.Paid" >
+    insert into paid
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="houseId != null" >
+        house_id,
+      </if>
+      <if test="address != null" >
+        address,
+      </if>
+      <if test="price != null" >
+        price,
+      </if>
+      <if test="date != null" >
+        date,
+      </if>
+      <if test="paydate != null" >
+        paydate,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="userlistId != null" >
+        userlist_id,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="houseId != null" >
+        #{houseId,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        #{price,jdbcType=DOUBLE},
+      </if>
+      <if test="date != null" >
+        #{date,jdbcType=DATE},
+      </if>
+      <if test="paydate != null" >
+        #{paydate,jdbcType=DATE},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="userlistId != null" >
+        #{userlistId,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.hous.pojo.PaidExample" resultType="java.lang.Integer" >
+    select count(*) from paid
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update paid
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.houseId != null" >
+        house_id = #{record.houseId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.address != null" >
+        address = #{record.address,jdbcType=VARCHAR},
+      </if>
+      <if test="record.price != null" >
+        price = #{record.price,jdbcType=DOUBLE},
+      </if>
+      <if test="record.date != null" >
+        date = #{record.date,jdbcType=DATE},
+      </if>
+      <if test="record.paydate != null" >
+        paydate = #{record.paydate,jdbcType=DATE},
+      </if>
+      <if test="record.name != null" >
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userlistId != null" >
+        userlist_id = #{record.userlistId,jdbcType=INTEGER},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update paid
+    set id = #{record.id,jdbcType=INTEGER},
+      house_id = #{record.houseId,jdbcType=VARCHAR},
+      address = #{record.address,jdbcType=VARCHAR},
+      price = #{record.price,jdbcType=DOUBLE},
+      date = #{record.date,jdbcType=DATE},
+      paydate = #{record.paydate,jdbcType=DATE},
+      name = #{record.name,jdbcType=VARCHAR},
+      userlist_id = #{record.userlistId,jdbcType=INTEGER},
+      status = #{record.status,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hous.pojo.Paid" >
+    update paid
+    <set >
+      <if test="houseId != null" >
+        house_id = #{houseId,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        price = #{price,jdbcType=DOUBLE},
+      </if>
+      <if test="date != null" >
+        date = #{date,jdbcType=DATE},
+      </if>
+      <if test="paydate != null" >
+        paydate = #{paydate,jdbcType=DATE},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="userlistId != null" >
+        userlist_id = #{userlistId,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hous.pojo.Paid" >
+    update paid
+    set house_id = #{houseId,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      price = #{price,jdbcType=DOUBLE},
+      date = #{date,jdbcType=DATE},
+      paydate = #{paydate,jdbcType=DATE},
+      name = #{name,jdbcType=VARCHAR},
+      userlist_id = #{userlistId,jdbcType=INTEGER},
+      status = #{status,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

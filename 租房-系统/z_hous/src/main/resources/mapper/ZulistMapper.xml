@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hous.mapper.ZulistMapper" >
+  <resultMap id="BaseResultMap" type="com.hous.pojo.Zulist" >
+    <id column="zid" property="zid" jdbcType="INTEGER" />
+    <id column="house_id" property="houseId" jdbcType="VARCHAR" />
+    <result column="price" property="price" jdbcType="DOUBLE" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="userlist_id" property="userlistId" jdbcType="INTEGER" />
+    <result column="contract_id" property="contractId" jdbcType="INTEGER" />
+      <association property="userlist" javaType="com.hous.pojo.Userlist">
+			<!-- column:userlist表的主键对应的列  property：userlist对象中id属性-->
+	<id column="id" property="id"/>		
+	<result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="idcard" property="idcard" jdbcType="VARCHAR" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+     <result column="user_id" property="userId" jdbcType="INTEGER" />
+		</association>    
+    
+  </resultMap>
+  
+  <select id="findzukezulist" parameterType="Integer" resultMap="BaseResultMap">
+		SELECT
+			z.*,
+			u.*
+		FROM
+			zulist z
+		JOIN `userlist` u ON u.id = z.userlist_id and z.zid=#{id}
+	</select>
+  
+  	<insert id="insertzulist" parameterType="com.hous.pojo.Zulist">
+	  insert into zulist(house_id,price,address,userlist_id,contract_id) 
+	  values(#{houseId},#{price},#{address},#{userlistId},#{contractId})
+	</insert>
+  
+  	<delete id="deletezulist" parameterType="String" >
+		delete from zulist where house_id=#{houseId}
+	</delete>
+  
+  <select id="findzuuserlist" resultMap="BaseResultMap">
+		SELECT
+			z.*,
+			u.*
+		FROM
+			zulist z
+		JOIN `userlist` u ON u.id = z.userlist_id
+	</select>
+	
+		<select id="findzulist" resultType="com.hous.pojo.Zulist" parameterType="String">
+		SELECT * FROM
+			zulist WHERE house_id =#{houseId}
+	</select>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    zid, house_id, price, address, userlist_id, contract_id
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.hous.pojo.ZulistExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from zulist
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="com.hous.pojo.ZulistKey" >
+    select 
+    <include refid="Base_Column_List" />
+    from zulist
+    where zid = #{zid,jdbcType=INTEGER}
+      and house_id = #{houseId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="com.hous.pojo.ZulistKey" >
+    delete from zulist
+    where zid = #{zid,jdbcType=INTEGER}
+      and house_id = #{houseId,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.hous.pojo.ZulistExample" >
+    delete from zulist
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.hous.pojo.Zulist" >
+    insert into zulist (zid, house_id, price, 
+      address, userlist_id, contract_id
+      )
+    values (#{zid,jdbcType=INTEGER}, #{houseId,jdbcType=VARCHAR}, #{price,jdbcType=DOUBLE}, 
+      #{address,jdbcType=VARCHAR}, #{userlistId,jdbcType=INTEGER}, #{contractId,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.hous.pojo.Zulist" >
+    insert into zulist
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="zid != null" >
+        zid,
+      </if>
+      <if test="houseId != null" >
+        house_id,
+      </if>
+      <if test="price != null" >
+        price,
+      </if>
+      <if test="address != null" >
+        address,
+      </if>
+      <if test="userlistId != null" >
+        userlist_id,
+      </if>
+      <if test="contractId != null" >
+        contract_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="zid != null" >
+        #{zid,jdbcType=INTEGER},
+      </if>
+      <if test="houseId != null" >
+        #{houseId,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        #{price,jdbcType=DOUBLE},
+      </if>
+      <if test="address != null" >
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="userlistId != null" >
+        #{userlistId,jdbcType=INTEGER},
+      </if>
+      <if test="contractId != null" >
+        #{contractId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.hous.pojo.ZulistExample" resultType="java.lang.Integer" >
+    select count(*) from zulist
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update zulist
+    <set >
+      <if test="record.zid != null" >
+        zid = #{record.zid,jdbcType=INTEGER},
+      </if>
+      <if test="record.houseId != null" >
+        house_id = #{record.houseId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.price != null" >
+        price = #{record.price,jdbcType=DOUBLE},
+      </if>
+      <if test="record.address != null" >
+        address = #{record.address,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userlistId != null" >
+        userlist_id = #{record.userlistId,jdbcType=INTEGER},
+      </if>
+      <if test="record.contractId != null" >
+        contract_id = #{record.contractId,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update zulist
+    set zid = #{record.zid,jdbcType=INTEGER},
+      house_id = #{record.houseId,jdbcType=VARCHAR},
+      price = #{record.price,jdbcType=DOUBLE},
+      address = #{record.address,jdbcType=VARCHAR},
+      userlist_id = #{record.userlistId,jdbcType=INTEGER},
+      contract_id = #{record.contractId,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hous.pojo.Zulist" >
+    update zulist
+    <set >
+      <if test="price != null" >
+        price = #{price,jdbcType=DOUBLE},
+      </if>
+      <if test="address != null" >
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="userlistId != null" >
+        userlist_id = #{userlistId,jdbcType=INTEGER},
+      </if>
+      <if test="contractId != null" >
+        contract_id = #{contractId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where zid = #{zid,jdbcType=INTEGER}
+      and house_id = #{houseId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hous.pojo.Zulist" >
+    update zulist
+    set price = #{price,jdbcType=DOUBLE},
+      address = #{address,jdbcType=VARCHAR},
+      userlist_id = #{userlistId,jdbcType=INTEGER},
+      contract_id = #{contractId,jdbcType=INTEGER}
+    where zid = #{zid,jdbcType=INTEGER}
+      and house_id = #{houseId,jdbcType=VARCHAR}
+  </update>
+</mapper>

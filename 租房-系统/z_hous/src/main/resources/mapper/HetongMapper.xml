@@ -1,0 +1,319 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hous.mapper.HetongMapper" >
+  <resultMap id="BaseResultMap" type="com.hous.pojo.Hetong" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="chuzu" property="chuzu" jdbcType="VARCHAR" />
+    <result column="chuzu_idcard" property="chuzuIdcard" jdbcType="VARCHAR" />
+    <result column="zuke" property="zuke" jdbcType="VARCHAR" />
+    <result column="zuke_idcard" property="zukeIdcard" jdbcType="VARCHAR" />
+    <result column="fromdate" property="fromdate" jdbcType="VARCHAR" />
+    <result column="todate" property="todate" jdbcType="VARCHAR" />
+    <result column="price" property="price" jdbcType="DOUBLE" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="house_id" property="houseId" jdbcType="VARCHAR" />
+    <result column="payday" property="payday" jdbcType="INTEGER" />
+  </resultMap>
+  
+  	<insert id="inserthetong" parameterType="com.hous.pojo.Hetong">
+	  insert into hetong(house_id,address,payday,price,chuzu,chuzu_idcard,zuke,zuke_idcard,fromdate,todate) 
+	  values(#{houseId},#{address},#{payday},#{price},#{chuzu},#{chuzuIdcard},#{zuke},#{zukeIdcard},#{fromdate},#{todate})
+	</insert>
+  
+  <delete id="deletehetong" parameterType="String" >
+		delete from hetong where house_id=#{houseId}
+	</delete>
+  
+  <select id="findhetong" parameterType="String" resultType="com.hous.pojo.Hetong">
+		select * from hetong where house_id=#{houseId}
+	</select>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, chuzu, chuzu_idcard, zuke, zuke_idcard, fromdate, todate, price, address, house_id, 
+    payday
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.hous.pojo.HetongExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from hetong
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from hetong
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from hetong
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.hous.pojo.HetongExample" >
+    delete from hetong
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.hous.pojo.Hetong" >
+    insert into hetong (id, chuzu, chuzu_idcard, 
+      zuke, zuke_idcard, fromdate, 
+      todate, price, address, 
+      house_id, payday)
+    values (#{id,jdbcType=INTEGER}, #{chuzu,jdbcType=VARCHAR}, #{chuzuIdcard,jdbcType=VARCHAR}, 
+      #{zuke,jdbcType=VARCHAR}, #{zukeIdcard,jdbcType=VARCHAR}, #{fromdate,jdbcType=VARCHAR}, 
+      #{todate,jdbcType=VARCHAR}, #{price,jdbcType=DOUBLE}, #{address,jdbcType=VARCHAR}, 
+      #{houseId,jdbcType=VARCHAR}, #{payday,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hous.pojo.Hetong" >
+    insert into hetong
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="chuzu != null" >
+        chuzu,
+      </if>
+      <if test="chuzuIdcard != null" >
+        chuzu_idcard,
+      </if>
+      <if test="zuke != null" >
+        zuke,
+      </if>
+      <if test="zukeIdcard != null" >
+        zuke_idcard,
+      </if>
+      <if test="fromdate != null" >
+        fromdate,
+      </if>
+      <if test="todate != null" >
+        todate,
+      </if>
+      <if test="price != null" >
+        price,
+      </if>
+      <if test="address != null" >
+        address,
+      </if>
+      <if test="houseId != null" >
+        house_id,
+      </if>
+      <if test="payday != null" >
+        payday,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="chuzu != null" >
+        #{chuzu,jdbcType=VARCHAR},
+      </if>
+      <if test="chuzuIdcard != null" >
+        #{chuzuIdcard,jdbcType=VARCHAR},
+      </if>
+      <if test="zuke != null" >
+        #{zuke,jdbcType=VARCHAR},
+      </if>
+      <if test="zukeIdcard != null" >
+        #{zukeIdcard,jdbcType=VARCHAR},
+      </if>
+      <if test="fromdate != null" >
+        #{fromdate,jdbcType=VARCHAR},
+      </if>
+      <if test="todate != null" >
+        #{todate,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        #{price,jdbcType=DOUBLE},
+      </if>
+      <if test="address != null" >
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="houseId != null" >
+        #{houseId,jdbcType=VARCHAR},
+      </if>
+      <if test="payday != null" >
+        #{payday,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.hous.pojo.HetongExample" resultType="java.lang.Integer" >
+    select count(*) from hetong
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update hetong
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.chuzu != null" >
+        chuzu = #{record.chuzu,jdbcType=VARCHAR},
+      </if>
+      <if test="record.chuzuIdcard != null" >
+        chuzu_idcard = #{record.chuzuIdcard,jdbcType=VARCHAR},
+      </if>
+      <if test="record.zuke != null" >
+        zuke = #{record.zuke,jdbcType=VARCHAR},
+      </if>
+      <if test="record.zukeIdcard != null" >
+        zuke_idcard = #{record.zukeIdcard,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fromdate != null" >
+        fromdate = #{record.fromdate,jdbcType=VARCHAR},
+      </if>
+      <if test="record.todate != null" >
+        todate = #{record.todate,jdbcType=VARCHAR},
+      </if>
+      <if test="record.price != null" >
+        price = #{record.price,jdbcType=DOUBLE},
+      </if>
+      <if test="record.address != null" >
+        address = #{record.address,jdbcType=VARCHAR},
+      </if>
+      <if test="record.houseId != null" >
+        house_id = #{record.houseId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.payday != null" >
+        payday = #{record.payday,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update hetong
+    set id = #{record.id,jdbcType=INTEGER},
+      chuzu = #{record.chuzu,jdbcType=VARCHAR},
+      chuzu_idcard = #{record.chuzuIdcard,jdbcType=VARCHAR},
+      zuke = #{record.zuke,jdbcType=VARCHAR},
+      zuke_idcard = #{record.zukeIdcard,jdbcType=VARCHAR},
+      fromdate = #{record.fromdate,jdbcType=VARCHAR},
+      todate = #{record.todate,jdbcType=VARCHAR},
+      price = #{record.price,jdbcType=DOUBLE},
+      address = #{record.address,jdbcType=VARCHAR},
+      house_id = #{record.houseId,jdbcType=VARCHAR},
+      payday = #{record.payday,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hous.pojo.Hetong" >
+    update hetong
+    <set >
+      <if test="chuzu != null" >
+        chuzu = #{chuzu,jdbcType=VARCHAR},
+      </if>
+      <if test="chuzuIdcard != null" >
+        chuzu_idcard = #{chuzuIdcard,jdbcType=VARCHAR},
+      </if>
+      <if test="zuke != null" >
+        zuke = #{zuke,jdbcType=VARCHAR},
+      </if>
+      <if test="zukeIdcard != null" >
+        zuke_idcard = #{zukeIdcard,jdbcType=VARCHAR},
+      </if>
+      <if test="fromdate != null" >
+        fromdate = #{fromdate,jdbcType=VARCHAR},
+      </if>
+      <if test="todate != null" >
+        todate = #{todate,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        price = #{price,jdbcType=DOUBLE},
+      </if>
+      <if test="address != null" >
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="houseId != null" >
+        house_id = #{houseId,jdbcType=VARCHAR},
+      </if>
+      <if test="payday != null" >
+        payday = #{payday,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hous.pojo.Hetong" >
+    update hetong
+    set chuzu = #{chuzu,jdbcType=VARCHAR},
+      chuzu_idcard = #{chuzuIdcard,jdbcType=VARCHAR},
+      zuke = #{zuke,jdbcType=VARCHAR},
+      zuke_idcard = #{zukeIdcard,jdbcType=VARCHAR},
+      fromdate = #{fromdate,jdbcType=VARCHAR},
+      todate = #{todate,jdbcType=VARCHAR},
+      price = #{price,jdbcType=DOUBLE},
+      address = #{address,jdbcType=VARCHAR},
+      house_id = #{houseId,jdbcType=VARCHAR},
+      payday = #{payday,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

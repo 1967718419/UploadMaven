@@ -1,0 +1,421 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hous.mapper.HouselistMapper" >
+  <resultMap id="BaseResultMap" type="com.hous.pojo.Houselist" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <id column="houseid" property="houseid" jdbcType="VARCHAR" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="area" property="area" jdbcType="DOUBLE" />
+    <result column="price" property="price" jdbcType="DOUBLE" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="img" property="img" jdbcType="VARCHAR" />
+    <result column="introduce" property="introduce" jdbcType="VARCHAR" />
+    <result column="landlady" property="landlady" jdbcType="VARCHAR" />
+  </resultMap>
+  <update id="updatestatus" parameterType="com.hous.pojo.Houselist">
+  			update houselist set status=#{status} where houseid=#{houseid}
+  </update>
+  
+  	<delete id="deletehousebyhouseid" parameterType="String" >
+		delete from houselist where houseid=#{houseid}
+	</delete>
+	
+	<update id="updatehousestatus" parameterType="com.hous.pojo.Houselist">
+		update houselist set status=#{status}
+		where id=#{id}
+</update>
+  
+    <select id="selectLandladyAll" resultMap="BaseResultMap" parameterType="String">
+   select * from houselist where landlady=#{username}
+  </select>
+   <select id="selectAll" resultMap="BaseResultMap">
+   select *
+    from houselist where status!='已租赁'
+    <!-- <where>
+		
+		<if test="houseid!=null and houseid!=''">
+		and houseid=#{houseid}
+		</if>
+		<if test="address!=null and address!=''">
+		and address=#{address}
+		</if>
+		<if test="area!=null and area!=''">
+		and area=#{area}
+		</if>
+		<if test="price!=null and price!=''">
+		and price=#{price}
+		</if>
+		<if test="status!=null and status!=''">
+		and status=#{status}
+		</if>
+		</where> -->
+		
+  </select>
+  
+  <select id="selects" resultMap="BaseResultMap" parameterType="String">
+   select *
+    from houselist
+    <where>
+        and status!='已租赁'
+		<if test="price!=null and price!=''">
+		and price between #{price} and #{price2}
+		</if>
+		<if test="area!=null and area!=''">
+		and area between #{area} and #{area2}
+		</if>
+		
+		<if test="address!=null and address!=''">
+		and address like "%"#{address}"%"
+		</if>
+		</where>
+		
+  </select>
+  
+   <select id="selects1" resultMap="BaseResultMap" parameterType="String">
+   select *
+    from houselist
+    <where>
+		and status!='已租赁'
+		<if test="address!=null and address!=''">
+		and address like "%"#{address}"%"
+		</if>
+		</where>
+		
+  </select>
+  
+  <select id="selects2" resultMap="BaseResultMap" parameterType="String">
+   select *
+    from houselist
+    <where>
+    and status!='已租赁'
+		<if test="area!=null and area!=''">
+		and area between #{area} and #{area2}
+		</if>
+		<if test="address!=null and address!=''">
+		and address like "%"#{address}"%"
+		</if>
+		</where>
+		
+  </select>
+  
+  <select id="selects3" resultMap="BaseResultMap" parameterType="String">
+   select *
+    from houselist
+    <where>
+    and status!='已租赁'
+		<if test="price!=null and price!=''">
+		and price between #{price} and #{price2}
+		</if>
+		<if test="address!=null and address!=''">
+		and address like "%"#{address}"%"
+		</if>
+		</where>
+		
+  </select>
+  
+  
+  <!--  
+ <select id="selectAll" resultMap="BaseResultMap">
+   select *
+    from houselist
+    <where>
+		
+		<if test="houseid!=null and houseid!=''">
+		and username=#{houseid}
+		</if>
+		<if test="address!=null and address!=''">
+		and address=#{address}
+		</if>
+		<if test="area!=null and area!=''">
+		and area=#{area}
+		</if>
+		<if test="price!=null and price!=''">
+		and price=#{price}
+		</if>
+		<if test="status!=null and status!=''">
+		and status=#{status}
+		</if>
+		</where>
+		
+  </select>
+  -->
+  
+  <select id="findhouseid" parameterType="String" resultType="com.hous.pojo.Houselist">
+		select * from houselist where houseid=#{houseid}
+	</select>
+	
+	<select id="findid" parameterType="Integer" resultType="com.hous.pojo.Houselist">
+		select * from houselist where id=#{id}
+	</select>
+	
+	  <select id="findhouseidupdate" parameterType="com.hous.pojo.Houselist" resultType="com.hous.pojo.Houselist">
+		select * from houselist where houseid=#{houseid} and id!=#{id}
+	</select>
+	
+	<update id="updatehouse" parameterType="com.hous.pojo.Houselist">
+		update houselist set houseid=#{houseid},address=#{address},area=#{area},price=#{price},status=#{status}
+		where id=#{id}
+</update>
+  
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, houseid, address, area, price, status, img, introduce, landlady
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.hous.pojo.HouselistExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from houselist
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="com.hous.pojo.HouselistKey" >
+    select 
+    <include refid="Base_Column_List" />
+    from houselist
+    where id = #{id,jdbcType=INTEGER}
+      and houseid = #{houseid,jdbcType=VARCHAR}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="com.hous.pojo.HouselistKey" >
+    delete from houselist
+    where id = #{id,jdbcType=INTEGER}
+      and houseid = #{houseid,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.hous.pojo.HouselistExample" >
+    delete from houselist
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.hous.pojo.Houselist" >
+    insert into houselist (id, houseid, address, 
+      area, price, status, 
+      img, introduce, landlady
+      )
+    values (#{id,jdbcType=INTEGER}, #{houseid,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, 
+      #{area,jdbcType=DOUBLE}, #{price,jdbcType=DOUBLE}, #{status,jdbcType=VARCHAR}, 
+      #{img,jdbcType=VARCHAR}, #{introduce,jdbcType=VARCHAR}, #{landlady,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.hous.pojo.Houselist" >
+    insert into houselist
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="houseid != null" >
+        houseid,
+      </if>
+      <if test="address != null" >
+        address,
+      </if>
+      <if test="area != null" >
+        area,
+      </if>
+      <if test="price != null" >
+        price,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="img != null" >
+        img,
+      </if>
+      <if test="introduce != null" >
+        introduce,
+      </if>
+      <if test="landlady != null" >
+        landlady,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="houseid != null" >
+        #{houseid,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="area != null" >
+        #{area,jdbcType=DOUBLE},
+      </if>
+      <if test="price != null" >
+        #{price,jdbcType=DOUBLE},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="img != null" >
+        #{img,jdbcType=VARCHAR},
+      </if>
+      <if test="introduce != null" >
+        #{introduce,jdbcType=VARCHAR},
+      </if>
+      <if test="landlady != null" >
+        #{landlady,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.hous.pojo.HouselistExample" resultType="java.lang.Integer" >
+    select count(*) from houselist
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update houselist
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.houseid != null" >
+        houseid = #{record.houseid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.address != null" >
+        address = #{record.address,jdbcType=VARCHAR},
+      </if>
+      <if test="record.area != null" >
+        area = #{record.area,jdbcType=DOUBLE},
+      </if>
+      <if test="record.price != null" >
+        price = #{record.price,jdbcType=DOUBLE},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=VARCHAR},
+      </if>
+      <if test="record.img != null" >
+        img = #{record.img,jdbcType=VARCHAR},
+      </if>
+      <if test="record.introduce != null" >
+        introduce = #{record.introduce,jdbcType=VARCHAR},
+      </if>
+      <if test="record.landlady != null" >
+        landlady = #{record.landlady,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update houselist
+    set id = #{record.id,jdbcType=INTEGER},
+      houseid = #{record.houseid,jdbcType=VARCHAR},
+      address = #{record.address,jdbcType=VARCHAR},
+      area = #{record.area,jdbcType=DOUBLE},
+      price = #{record.price,jdbcType=DOUBLE},
+      status = #{record.status,jdbcType=VARCHAR},
+      img = #{record.img,jdbcType=VARCHAR},
+      introduce = #{record.introduce,jdbcType=VARCHAR},
+      landlady = #{record.landlady,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hous.pojo.Houselist" >
+    update houselist
+    <set >
+      <if test="address != null" >
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="area != null" >
+        area = #{area,jdbcType=DOUBLE},
+      </if>
+      <if test="price != null" >
+        price = #{price,jdbcType=DOUBLE},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="img != null" >
+        img = #{img,jdbcType=VARCHAR},
+      </if>
+      <if test="introduce != null" >
+        introduce = #{introduce,jdbcType=VARCHAR},
+      </if>
+      <if test="landlady != null" >
+        landlady = #{landlady,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+      and houseid = #{houseid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hous.pojo.Houselist" >
+    update houselist
+    set address = #{address,jdbcType=VARCHAR},
+      area = #{area,jdbcType=DOUBLE},
+      price = #{price,jdbcType=DOUBLE},
+      status = #{status,jdbcType=VARCHAR},
+      img = #{img,jdbcType=VARCHAR},
+      introduce = #{introduce,jdbcType=VARCHAR},
+      landlady = #{landlady,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+      and houseid = #{houseid,jdbcType=VARCHAR}
+  </update>
+</mapper>
