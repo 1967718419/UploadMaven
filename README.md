@@ -30,9 +30,10 @@
 	<!-- 使用springmvc和spring的jar包 -->
 	<dependencies>
 	<dependency>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-starter-web</artifactId>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
+	
 ###二、mysql（pom.xml）
 	<!--集成mysql数据库-->
 	<dependency>
