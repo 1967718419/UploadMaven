@@ -20,7 +20,8 @@
 	租客账号  刘三 密码  123
 # 部署说明
 本项目JDK要求JDK1.8
-###一、springboot （pom.xml）
+
+##一、springboot （pom.xml）
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
@@ -32,7 +33,7 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-###二、mysql（pom.xml）
+##二、mysql（pom.xml）
 	<!--集成mysql数据库-->
 	<dependency>
             <groupId>mysql</groupId>
@@ -43,7 +44,7 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-jdbc</artifactId>
         </dependency>
-###三、mybatis（pom.xml）
+##三、mybatis（pom.xml）
 	<dependency>
 		    <groupId>org.mybatis.spring.boot</groupId>
 		    <artifactId>mybatis-spring-boot-starter</artifactId>
@@ -52,7 +53,7 @@
 		
 		application.properties添加：
 		mybatis.mapper-locations=classpath:mapper/*.xml
-###四、JSP（pom.xml）
+##四、JSP（pom.xml）
 	        <!-- springboot支持JSP的相关依赖 -->
 		<!--servlet依赖 -->
 		<dependency>
@@ -78,11 +79,11 @@
 			<artifactId>tomcat-embed-jasper</artifactId>
 			<scope>provided</scope>
 		</dependency>
-###四、分页（pom.xml）
+##四、分页（pom.xml）
 	<dependency>
 		    <groupId>com.github.pagehelper</groupId>
 		    <artifactId>pagehelper-spring-boot-starter</artifactId>
 		    <version>1.2.3</version>
 		</dependency>
-###五、Tomcat（application.properties）
+##五、Tomcat（application.properties）
 	server.port=8082
