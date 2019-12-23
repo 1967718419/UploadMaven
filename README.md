@@ -21,7 +21,7 @@
 # 部署说明
 本项目JDK要求JDK1.8
 
-##一、springboot （pom.xml）
+#一、springboot （pom.xml）
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
@@ -33,7 +33,7 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-##二、mysql（pom.xml）
+. 二、mysql（pom.xml）
 	<!--集成mysql数据库-->
 	<dependency>
             <groupId>mysql</groupId>
